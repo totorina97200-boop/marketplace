@@ -1,123 +1,169 @@
 
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Devenir commerçant</title>
+<x-app-layout>
+    <x-slot name="header">
+        <h2 class="font-semibold text-xl leading-tight" style="color: #76533b;">
+            🏪 Devenir commerçant
+        </h2>
+    </x-slot>
 
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background: #f7f5f1;
-            padding: 40px 20px;
-        }
+    <div class="py-12" style="background: #f5f0e8; min-height: 80vh;">
+        <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
 
-        .container {
-            max-width: 600px;
-            margin: auto;
-            background: white;
-            padding: 35px;
-            border-radius: 12px;
-        }
+            <div class="bg-white rounded-2xl shadow-sm p-6 sm:p-8">
 
-        h1 {
-            color: #9b713f;
-        }
+                <div class="text-center mb-8">
+                    <div class="text-5xl mb-4">🏪</div>
 
-        label {
-            display: block;
-            margin-top: 20px;
-            font-weight: bold;
-        }
+                    <h1 class="text-2xl font-bold" style="color: #76533b;">
+                        Rejoins notre marketplace !
+                    </h1>
 
-        input, textarea {
-            width: 100%;
-            padding: 12px;
-            margin-top: 8px;
-            border: 1px solid #ddd;
-            border-radius: 6px;
-            box-sizing: border-box;
-        }
+                    <p class="text-gray-500 mt-2">
+                        Présente-nous ta boutique et propose tes produits à nos clients.
+                    </p>
+                </div>
 
-        button {
-            margin-top: 25px;
-            padding: 14px 22px;
-            background: #9b713f;
-            color: white;
-            border: none;
-            border-radius: 6px;
-            cursor: pointer;
-        }
+                @if(session('success'))
+                    <div class="p-4 mb-5 rounded-xl"
+                         style="background: #e8f5e9; color: #256029;">
+                        {{ session('success') }}
+                    </div>
+                @endif
 
-        .message {
-            padding: 12px;
-            background: #e8f5e9;
-            margin-bottom: 15px;
-        }
+                @if(session('error'))
+                    <div class="p-4 mb-5 rounded-xl"
+                         style="background: #fdecea; color: #a12622;">
+                        {{ session('error') }}
+                    </div>
+                @endif
 
-        .error {
-            color: red;
-        }
-    </style>
-</head>
+                @if($demande)
 
-<body>
+                    <div class="rounded-2xl p-6 text-center"
+                         style="background: #f8f3ed;">
 
-<div class="container">
+                        <div class="text-4xl mb-3">📋</div>
 
-    <h1>Devenir commerçant</h1>
+                        <h2 class="text-xl font-bold" style="color: #76533b;">
+                            Ta demande a déjà été envoyée
+                        </h2>
 
-    <p>Présente-nous ta boutique pour rejoindre notre marketplace.</p>
+                        <p class="text-gray-600 mt-3">
+                            Nom de la boutique :
+                            <strong>{{ $demande->nom_boutique }}</strong>
+                        </p>
 
-    @if(session('success'))
-        <div class="message">{{ session('success') }}</div>
-    @endif
+                        <p class="mt-3 text-gray-600">
+                            Statut de ta demande :
+                        </p>
 
-    @if(session('error'))
-        <div class="error">{{ session('error') }}</div>
-    @endif
+                        <span class="inline-block mt-2 px-4 py-2 rounded-full font-semibold text-sm"
+                              style="background: #fff3cd; color: #856404;">
+                            {{ ucfirst($demande->statut) }}
+                        </span>
 
-    @if($demande)
+                        <p class="text-sm text-gray-500 mt-4">
+                            Tu pourras accéder à ton espace commerçant après validation de ta demande.
+                        </p>
 
-        <h3>Ta demande a déjà été envoyée.</h3>
+                    </div>
 
-        <p>Statut :
-            <strong>{{ $demande->statut }}</strong>
-        </p>
+                @else
 
-    @else
+                    @if($errors->any())
+                        <div class="p-4 mb-5 rounded-xl"
+                             style="background: #fdecea; color: #a12622;">
 
-        @if($errors->any())
-            <div class="error">
-                @foreach($errors->all() as $error)
-                    <p>{{ $error }}</p>
-                @endforeach
+                            <strong>Attention, vérifie les informations suivantes :</strong>
+
+                            <ul class="list-disc ml-5 mt-2">
+                                @foreach($errors->all() as $error)
+                                    <li>{{ $error }}</li>
+                                @endforeach
+                            </ul>
+                        </div>
+                    @endif
+
+                    <form method="POST" action="{{ route('commercant.demande.store') }}">
+                        @csrf
+
+                        <div class="mb-5">
+                            <label for="nom_boutique"
+                                   class="block font-semibold mb-2"
+                                   style="color: #44352b;">
+                                Nom de ta boutique
+                            </label>
+
+                            <input
+                                type="text"
+                                id="nom_boutique"
+                                name="nom_boutique"
+                                value="{{ old('nom_boutique') }}"
+                                placeholder="Exemple : Ma jolie boutique"
+                                required
+                                class="w-full rounded-xl border-gray-300 focus:border-amber-700 focus:ring-amber-700"
+                            >
+                        </div>
+
+                        <div class="mb-5">
+                            <label for="description"
+                                   class="block font-semibold mb-2"
+                                   style="color: #44352b;">
+                                Description de ta boutique
+                            </label>
+
+                            <textarea
+                                id="description"
+                                name="description"
+                                rows="5"
+                                placeholder="Présente les produits que tu souhaites vendre..."
+                                class="w-full rounded-xl border-gray-300 focus:border-amber-700 focus:ring-amber-700"
+                            >{{ old('description') }}</textarea>
+                        </div>
+
+                        <div class="mb-6">
+                            <label for="telephone"
+                                   class="block font-semibold mb-2"
+                                   style="color: #44352b;">
+                                Téléphone
+                            </label>
+
+                            <input
+                                type="text"
+                                id="telephone"
+                                name="telephone"
+                                value="{{ old('telephone') }}"
+                                placeholder="Exemple : 0696 00 00 00"
+                                class="w-full rounded-xl border-gray-300 focus:border-amber-700 focus:ring-amber-700"
+                            >
+                        </div>
+
+                        <div class="rounded-xl p-4 mb-6"
+                             style="background: #f8f3ed;">
+                            <p class="text-sm" style="color: #76533b;">
+                                💡 Après l'envoi, l'administrateur examinera ta demande. Tu pourras devenir commerçant une fois celle-ci acceptée.
+                            </p>
+                        </div>
+
+                        <button
+                            type="submit"
+                            class="w-full px-6 py-4 rounded-xl text-white font-bold"
+                            style="background: #76533b;">
+                            Envoyer ma demande →
+                        </button>
+                    </form>
+
+                @endif
+
+                <div class="text-center mt-6">
+                    <a href="{{ route('dashboard') }}"
+                       class="font-semibold"
+                       style="color: #76533b;">
+                        ← Retour à mon espace
+                    </a>
+                </div>
+
             </div>
-        @endif
-
-        <form method="POST" action="{{ route('commercant.demande.store') }}">
-
-            @csrf
-
-            <label>Nom de ta boutique</label>
-            <input type="text" name="nom_boutique"
-                value="{{ old('nom_boutique') }}" required>
-
-            <label>Description de ta boutique</label>
-            <textarea name="description" rows="5">{{ old('description') }}</textarea>
-
-            <label>Téléphone</label>
-            <input type="text" name="telephone"
-                value="{{ old('telephone') }}">
-
-            <button type="submit">Envoyer ma demande</button>
-
-        </form>
-
-    @endif
-
-</div>
-
-</body>
-</html>
+        </div>
+    </div>
+</x-app-layout>
