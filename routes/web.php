@@ -91,16 +91,22 @@ Route::middleware(['auth'])->group(function () {
         ->name('commandes.show');
 
 
+    // ESPACE COMMERCANT
+    Route::middleware(['commercant'])
+        ->prefix('commercant')
+        ->name('commercant.')
+        ->group(function () {
+
+            Route::resource('produits', ProduitController::class)
+                ->except(['show']);
+        });
+
+
     // ADMINISTRATION
     Route::middleware(['admin'])
         ->prefix('admin')
         ->name('admin.')
         ->group(function () {
-
-            // GESTION DES PRODUITS
-            Route::resource('commercant/produits', ProduitController::class)
-                ->names('commercant.produits')
-                ->except(['show']);
 
             // AFFICHER LES DEMANDES
             Route::get('/demandes', [

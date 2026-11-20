@@ -747,39 +747,43 @@
 </section>
 
 
+
 <!-- PIED DE PAGE -->
-
 <footer>
-
     <div class="footer-contenu">
 
-        <div>
-            <div class="footer-logo">
-                MA MARKETPLACE
-            </div>
+        <div class="footer-description">
+            <div class="footer-logo">🏪 MA MARKETPLACE</div>
 
             <p>
-                Toutes vos boutiques au même endroit.
-                <br>
+                Toutes vos boutiques au même endroit.<br>
                 Découvrez, choisissez et commandez facilement.
             </p>
         </div>
 
         <div class="footer-liens">
-
             <strong>Navigation</strong>
-
             <a href="{{ route('accueil') }}">Accueil</a>
-            <a href="#produits">Nos produits</a>
+            <a href="{{ route('accueil') }}#produits">Nos produits</a>
 
             @auth
                 <a href="{{ route('dashboard') }}">Mon espace</a>
                 <a href="{{ route('panier.index') }}">Mon panier</a>
+                <a href="{{ route('commandes.index') }}">Mes commandes</a>
             @else
                 <a href="{{ route('login') }}">Connexion</a>
                 <a href="{{ route('register') }}">Créer un compte</a>
             @endauth
+        </div>
 
+        <div class="footer-liens">
+            <strong>Notre marketplace</strong>
+            <a href="{{ route('accueil') }}#produits">Découvrir les produits</a>
+            @auth
+                <a href="{{ route('commercant.demande') }}">Devenir commerçant</a>
+            @else
+                <a href="{{ route('register') }}">Rejoindre la marketplace</a>
+            @endauth
         </div>
 
     </div>
@@ -787,7 +791,6 @@
     <div class="copyright">
         © {{ date('Y') }} MA MARKETPLACE - Tous droits réservés.
     </div>
-
 </footer>
 
 </body>

@@ -1,3 +1,45 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* Style général */
+@layer base {
+    body {
+        background-color: #f5f0e8;
+        color: #44352b;
+        font-family: 'Figtree', sans-serif;
+    }
+
+    h1, h2, h3, h4 {
+        color: #44352b;
+    }
+
+    input, select, textarea {
+        border-color: #d8c8b6 !important;
+        border-radius: 8px !important;
+    }
+
+    input:focus, select:focus, textarea:focus {
+        border-color: #76533b !important;
+        --tw-ring-color: #76533b !important;
+    }
+
+    button {
+        transition: all 0.2s ease;
+    }
+}
+
+/* Composants réutilisables */
+@layer components {
+    .bouton-principal {
+        @apply bg-[#76533b] text-white font-semibold px-5 py-3 rounded-lg;
+    }
+
+    .bouton-principal:hover {
+        @apply bg-[#44352b];
+    }
+
+    .carte-marketplace {
+        @apply bg-white rounded-2xl shadow-sm border border-[#e8ded0];
+    }
+}
