@@ -232,54 +232,34 @@
     </style>
 
     <div class="produits-page">
-
         <div class="produits-container">
 
-            <!-- PRESENTATION -->
-
             <div class="produits-intro">
-
                 <h1>Ma boutique, mes produits 🏪</h1>
-
                 <p>
                     Retrouve tous tes produits et gère facilement
                     tes prix, tes stocks et tes annonces.
                 </p>
-
             </div>
 
-
-            <!-- TITRE ET AJOUT -->
-
             <div class="produits-entete">
-
                 <h3>Liste de mes produits</h3>
 
-                <a href="{{ route('admin.commercant.produits.create') }}"
+                <a href="{{ route('commercant.produits.create') }}"
                    class="bouton-ajouter">
                     ➕ Ajouter un produit
                 </a>
-
             </div>
 
-
-            <!-- MESSAGE -->
-
             @if(session('success'))
-
                 <div class="message-success">
                     ✅ {{ session('success') }}
                 </div>
-
             @endif
-
-
-            <!-- PRODUITS -->
 
             @if($produits->isEmpty())
 
                 <div class="produits-vide">
-
                     <div class="icone">📦</div>
 
                     <h3>Aucun produit pour le moment</h3>
@@ -288,11 +268,10 @@
                         Tu n'as pas encore ajouté de produit à ta boutique.
                     </p>
 
-                    <a href="{{ route('admin.commercant.produits.create') }}"
+                    <a href="{{ route('commercant.produits.create') }}"
                        class="bouton-ajouter">
                         ➕ Ajouter mon premier produit
                     </a>
-
                 </div>
 
             @else
@@ -303,26 +282,15 @@
 
                         <div class="produit-card">
 
-                            <!-- PHOTO -->
-
                             @if($produit->image)
-
                                 <img
                                     src="{{ asset('storage/' . $produit->image) }}"
                                     alt="{{ $produit->nom }}"
                                     class="produit-photo"
                                 >
-
                             @else
-
-                                <div class="photo-vide">
-                                    📦
-                                </div>
-
+                                <div class="photo-vide">📦</div>
                             @endif
-
-
-                            <!-- INFORMATIONS -->
 
                             <div class="produit-contenu">
 
@@ -336,35 +304,29 @@
                                     📊 Stock : {{ $produit->stock }}
                                 </div>
 
-
-                                <!-- ACTIONS -->
-
                                 <div class="produit-actions">
 
-                                    <a href="{{ route('admin.commercant.produits.edit', $produit) }}"
+                                    <a href="{{ route('commercant.produits.edit', $produit) }}"
                                        class="bouton-modifier">
                                         ✏️ Modifier
                                     </a>
 
                                     <form
-                                        action="{{ route('admin.commercant.produits.destroy', $produit) }}"
+                                        action="{{ route('commercant.produits.destroy', $produit) }}"
                                         method="POST"
                                         onsubmit="return confirm('Veux-tu vraiment supprimer ce produit ?')"
                                     >
-
                                         @csrf
                                         @method('DELETE')
 
                                         <button type="submit" class="bouton-supprimer">
                                             🗑️ Supprimer
                                         </button>
-
                                     </form>
 
                                 </div>
 
                             </div>
-
                         </div>
 
                     @endforeach
@@ -374,7 +336,6 @@
             @endif
 
         </div>
-
     </div>
 
 </x-app-layout>

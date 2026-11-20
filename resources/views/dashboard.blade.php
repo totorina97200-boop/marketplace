@@ -231,12 +231,12 @@
 
                     <div class="dashboard-buttons">
 
-                        <a href="{{ route('admin.commercant.produits.index') }}"
+                        <a href="{{ route('commercant.produits.index') }}"
                            class="dashboard-button button-blue">
                             Mes produits
                         </a>
 
-                        <a href="{{ route('admin.commercant.produits.create') }}"
+                        <a href="{{ route('commercant.produits.create') }}"
                            class="dashboard-button button-green">
                             + Ajouter un produit
                         </a>

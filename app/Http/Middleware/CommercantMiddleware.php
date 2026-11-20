@@ -14,9 +14,9 @@ class CommercantMiddleware
             return redirect()->route('login');
         }
 
-        // Vérifier que l'utilisateur possède le rôle commerçant
-        if ($request->user()->role !== 'commercant') {
-            abort(403, 'Accès réservé aux commerçants.');
+        // Autoriser les administrateurs et les commerçants
+        if (!in_array($request->user()->role, ['admin', 'commercant'])) {
+            abort(403, 'Accès réservé aux administrateurs et aux commerçants.');
         }
 
         return $next($request);

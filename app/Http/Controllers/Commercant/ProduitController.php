@@ -10,17 +10,13 @@ use Illuminate\Support\Str;
 
 class ProduitController extends Controller
 {
-    /**
-     * Récupérer la boutique du commerçant connecté.
-     */
+    // Récupérer la boutique du commerçant connecté
     private function boutique()
     {
         return Boutique::where('user_id', auth()->id())->firstOrFail();
     }
 
-    /**
-     * Afficher la liste des produits.
-     */
+    // Afficher les produits de sa boutique
     public function index()
     {
         $boutique = $this->boutique();
@@ -32,17 +28,15 @@ class ProduitController extends Controller
         return view('commercant.produits.index', compact('produits'));
     }
 
-    /**
-     * Afficher le formulaire d'ajout.
-     */
+    // Afficher le formulaire d'ajout
     public function create()
     {
+        $this->boutique();
+
         return view('commercant.produits.create');
     }
 
-    /**
-     * Enregistrer un nouveau produit.
-     */
+    // Enregistrer un produit
     public function store(Request $request)
     {
         $request->validate([
@@ -58,8 +52,7 @@ class ProduitController extends Controller
         $image = null;
 
         if ($request->hasFile('image')) {
-            $image = $request->file('image')
-                ->store('produits', 'public');
+            $image = $request->file('image')->store('produits', 'public');
         }
 
         $boutique->produits()->create([
@@ -73,13 +66,11 @@ class ProduitController extends Controller
         ]);
 
         return redirect()
-            ->route('admin.commercant.produits.index')
+            ->route('commercant.produits.index')
             ->with('success', 'Produit ajouté avec succès !');
     }
 
-    /**
-     * Afficher le formulaire de modification.
-     */
+    // Modifier un produit
     public function edit(Produit $produit)
     {
         $produit = $this->boutique()
@@ -89,9 +80,7 @@ class ProduitController extends Controller
         return view('commercant.produits.edit', compact('produit'));
     }
 
-    /**
-     * Mettre à jour un produit.
-     */
+    // Enregistrer les modifications
     public function update(Request $request, Produit $produit)
     {
         $produit = $this->boutique()
@@ -109,13 +98,11 @@ class ProduitController extends Controller
         $image = $produit->image;
 
         if ($request->hasFile('image')) {
-
             if ($image) {
                 Storage::disk('public')->delete($image);
             }
 
-            $image = $request->file('image')
-                ->store('produits', 'public');
+            $image = $request->file('image')->store('produits', 'public');
         }
 
         $produit->update([
@@ -127,13 +114,11 @@ class ProduitController extends Controller
         ]);
 
         return redirect()
-            ->route('admin.commercant.produits.index')
+            ->route('commercant.produits.index')
             ->with('success', 'Produit modifié avec succès !');
     }
 
-    /**
-     * Supprimer un produit.
-     */
+    // Supprimer un produit
     public function destroy(Produit $produit)
     {
         $produit = $this->boutique()
@@ -147,7 +132,7 @@ class ProduitController extends Controller
         $produit->delete();
 
         return redirect()
-            ->route('admin.commercant.produits.index')
+            ->route('commercant.produits.index')
             ->with('success', 'Produit supprimé avec succès !');
     }
 }

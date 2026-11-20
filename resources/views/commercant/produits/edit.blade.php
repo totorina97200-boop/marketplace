@@ -7,38 +7,38 @@
                 MA MARKETPLACE
             </p>
             <h2 style="font-size:22px;font-weight:bold;color:#29251f;">
-                ✏️ Modifier un produit
+                ➕ Ajouter un produit
             </h2>
         </div>
     </x-slot>
 
     <style>
-        .modification-page {
+        .ajout-page {
             background: #faf8f5;
             min-height: 80vh;
             padding: 35px 15px 60px;
         }
 
-        .modification-container {
+        .ajout-container {
             max-width: 800px;
             margin: auto;
         }
 
-        .modification-intro {
+        .ajout-intro {
             background: linear-gradient(120deg, #f3eadf, #e8d5bd);
             padding: 27px;
             border-radius: 14px;
             margin-bottom: 25px;
         }
 
-        .modification-intro h1 {
+        .ajout-intro h1 {
             font-size: 25px;
             font-weight: bold;
             color: #29251f;
             margin-bottom: 8px;
         }
 
-        .modification-intro p {
+        .ajout-intro p {
             color: #625442;
         }
 
@@ -85,22 +85,13 @@
         .aide {
             font-size: 13px;
             color: #888;
-            margin-top: 7px;
+            margin-top: 6px;
         }
 
         .erreur {
             color: #b42318;
             font-size: 13px;
             margin-top: 6px;
-        }
-
-        .image-actuelle {
-            width: 180px;
-            height: 150px;
-            object-fit: cover;
-            border-radius: 9px;
-            margin-top: 12px;
-            border: 1px solid #eee;
         }
 
         .actions-formulaire {
@@ -140,7 +131,7 @@
                 padding: 20px;
             }
 
-            .modification-intro h1 {
+            .ajout-intro h1 {
                 font-size: 22px;
             }
 
@@ -150,26 +141,24 @@
         }
     </style>
 
-    <div class="modification-page">
+    <div class="ajout-page">
+        <div class="ajout-container">
 
-        <div class="modification-container">
-
-            <div class="modification-intro">
-                <h1>Mettre à jour ton produit 🛍️</h1>
+            <div class="ajout-intro">
+                <h1>Présente ton produit 🛍️</h1>
                 <p>
-                    Modifie les informations, le prix, le stock ou la photo
-                    de ton produit.
+                    Ajoute les informations de ton produit pour le proposer
+                    aux clients de la marketplace.
                 </p>
             </div>
 
             <div class="formulaire">
 
-                <form action="{{ route('admin.commercant.produits.update', $produit) }}"
+                <form action="{{ route('commercant.produits.store') }}"
                       method="POST"
                       enctype="multipart/form-data">
 
                     @csrf
-                    @method('PUT')
 
                     <div class="champ">
                         <label for="nom">Nom du produit *</label>
@@ -177,7 +166,8 @@
                         <input type="text"
                                id="nom"
                                name="nom"
-                               value="{{ old('nom', $produit->nom) }}"
+                               value="{{ old('nom') }}"
+                               placeholder="Exemple : Sac artisanal"
                                required>
 
                         @error('nom')
@@ -189,7 +179,8 @@
                         <label for="description">Description</label>
 
                         <textarea id="description"
-                                  name="description">{{ old('description', $produit->description) }}</textarea>
+                                  name="description"
+                                  placeholder="Décris ton produit...">{{ old('description') }}</textarea>
 
                         @error('description')
                             <p class="erreur">{{ $message }}</p>
@@ -202,9 +193,10 @@
                         <input type="number"
                                id="prix"
                                name="prix"
-                               value="{{ old('prix', $produit->prix) }}"
+                               value="{{ old('prix') }}"
                                step="0.01"
                                min="0"
+                               placeholder="Exemple : 19.90"
                                required>
 
                         @error('prix')
@@ -218,8 +210,9 @@
                         <input type="number"
                                id="stock"
                                name="stock"
-                               value="{{ old('stock', $produit->stock) }}"
+                               value="{{ old('stock', 0) }}"
                                min="0"
+                               placeholder="Exemple : 10"
                                required>
 
                         @error('stock')
@@ -228,7 +221,7 @@
                     </div>
 
                     <div class="champ">
-                        <label for="image">Changer la photo (facultatif)</label>
+                        <label for="image">Photo du produit</label>
 
                         <input type="file"
                                id="image"
@@ -236,19 +229,8 @@
                                accept="image/*">
 
                         <p class="aide">
-                            Si tu ne sélectionnes aucune nouvelle photo,
-                            l'ancienne sera conservée.
+                            Tu peux ajouter une photo pour mieux présenter ton produit.
                         </p>
-
-                        @if($produit->image)
-                            <p class="aide">Photo actuellement enregistrée :</p>
-
-                            <img
-                                src="{{ asset('storage/' . $produit->image) }}"
-                                alt="{{ $produit->nom }}"
-                                class="image-actuelle"
-                            >
-                        @endif
 
                         @error('image')
                             <p class="erreur">{{ $message }}</p>
@@ -258,10 +240,10 @@
                     <div class="actions-formulaire">
 
                         <button type="submit" class="bouton-enregistrer">
-                            💾 Enregistrer les modifications
+                            💾 Enregistrer le produit
                         </button>
 
-                        <a href="{{ route('admin.commercant.produits.index') }}"
+                        <a href="{{ route('commercant.produits.index') }}"
                            class="bouton-annuler">
                             Annuler
                         </a>
@@ -271,9 +253,7 @@
                 </form>
 
             </div>
-
         </div>
-
     </div>
 
 </x-app-layout>

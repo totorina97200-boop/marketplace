@@ -142,7 +142,6 @@
     </style>
 
     <div class="ajout-page">
-
         <div class="ajout-container">
 
             <div class="ajout-intro">
@@ -155,7 +154,7 @@
 
             <div class="formulaire">
 
-                <form action="{{ route('admin.commercant.produits.store') }}"
+                <form action="{{ route('commercant.produits.store') }}"
                       method="POST"
                       enctype="multipart/form-data">
 
@@ -244,7 +243,7 @@
                             💾 Enregistrer le produit
                         </button>
 
-                        <a href="{{ route('admin.commercant.produits.index') }}"
+                        <a href="{{ route('commercant.produits.index') }}"
                            class="bouton-annuler">
                             Annuler
                         </a>
@@ -254,9 +253,7 @@
                 </form>
 
             </div>
-
         </div>
-
     </div>
 
 </x-app-layout>
